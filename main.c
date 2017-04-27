@@ -1,13 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "RegisterFile.h"
 
 int main()
 {
-    printf("ALU Simulations \n");
+    printf("ALU Simulation \n");
 
     //1)INITIALIZE CONTENTS OF REGISTER FILE
 
-    //file
+    //Register file object
     RegisterFile thefile;
     //MIPS instructions set
     //32 bit -> 31 ... 0
@@ -80,6 +81,9 @@ ALUSimulator(RegisterFile thefile, uint32_t OpCode, uint32_t Rs,
     uint32_t Rt, uint32_t Rd, uint32_t ShiftAmt, uint32_t FunctionCode,
         uint32_t ImmediateValue, uint32_t* Status){
 
+    //SWITCH CASES AND STUFF
 
+    //4) DUMP THE CONTENTS OF REGISTERS FOR EACH CALL
+    thefile.RegisterFile_Dump();
 
 }
