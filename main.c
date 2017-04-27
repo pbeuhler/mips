@@ -4,27 +4,33 @@
 int main()
 {
     printf("ALU Simulations \n");
+
+    //1)INITIALIZE CONTENTS OF REGISTER FILE
+
     //file
     RegisterFile thefile;
     //MIPS instructions set
     //32 bit -> 31 ... 0
+    // 6 -> 5 -> 5 -> 5-> 5-> 6
     uint32_t OpCode;
-    //ignore last 26 bits 32-26 = 6
-    int op_mask = (1 << 26-1)-1; //6
+    int op_mask = (1 << 6) - 1; //6
+
     uint32_t Rs;
-    int rs_mask = (1 << 21-1)-1;  // 5
-    uint32_t Rt;
-    int rt_mask = (1 << 16-1)-1; // 5
-    uint32_t Rd;
-    int rd_mask = (1 << 11-1)-1; // 5
+    int rs_mask = (1 << 5)-1;  // 5
+
+    uint32_t Rt; // 5
+
+    uint32_t Rd;// 5
+
     uint32_t ShiftAmt; // 5
-    int shift_mask = (1 << 26-1)-1;
+
     uint32_t FunctionCode; // 6
-    int func_mask = (1 << 31-6)-1
 
     //NO IDEA
     uint32_t ImmediateValue;
     uint32_t* Status;
+
+    //1) END
 
     //read file in binary
     FILE *file = NULL;
@@ -42,22 +48,33 @@ int main()
     //place temporarily values on buffer array
     int* buffer= new int[length];
 
+
+    //2) LOAD A LIST OF INSTRUCTIONS FROM A FILE
+
     //read data from file with 4 bytes at a time
     fread(buffer,4,length,file);
 
+    //2) END
+
     for(int i=0; i< length; i++){
-        //address length
-        OpCode = (buffer[i] >> 32-6) & (6-1) ;
-        Rs = (buffer[i] >> 32-(5+6)) & ();
-        Rt = (buffer[i] >> 32-(5+5+6));
-        Rd = (buffer[i] >> 32-6);
-        OpCode = (buffer[i] >> 32-6);
-        ALUSimulator();
+        //Set fields to their corresponding values
+
+        OpCode = (buffer[i] >> bits-6) & op_mask;
+        Rs = (buffer[i] >> bits-(5+6)) & rs_mask;
+        Rt = (buffer[i] >> bits-(5+5+6)) & rs_mask;
+        Rd = (buffer[i] >> bits-(5+5+6+5)) & rs_mask;
+        ShiftAmt = (buffer[i] >> bits-(5+5+6+5+5)) & rs_mask;
+        FunctionCode = (buffer[i] >> 0) & op_mask;
+
+        //3) CALL SIMULATOR FOR EACH INSTRUCTION
+        ALUSimulator(thefile, OpCode, Rs, Rt, Rd, ShiftAmt, FunctionCode, ImmediateValue, Status);
+        //3) END
     }
 
-    }
+    }//end for loop
+
     return 0;
-}
+} //end main
 
 ALUSimulator(RegisterFile thefile, uint32_t OpCode, uint32_t Rs,
     uint32_t Rt, uint32_t Rd, uint32_t ShiftAmt, uint32_t FunctionCode,
