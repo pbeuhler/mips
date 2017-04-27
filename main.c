@@ -77,13 +77,83 @@ int main()
     return 0;
 } //end main
 
-ALUSimulator(RegisterFile thefile, uint32_t OpCode, uint32_t Rs,
-    uint32_t Rt, uint32_t Rd, uint32_t ShiftAmt, uint32_t FunctionCode,
-        uint32_t ImmediateValue, uint32_t* Status){
+extern void ALUSimulator( RegisterFile theRegisterFile, uint32_t OpCode, uint32_t Rs, uint32_t Rt, 
+								uint32_t Rd, uint32_t ShiftAmt, uint32_t FunctionCode, uint32_t ImmediateValue
+								uint32_t* Status) {
 
-    //SWITCH CASES AND STUFF
+	if(OpCode == 000000){
+		if(FunctionCode == 00_0000){ //NOOP/SLL
 
-    //4) DUMP THE CONTENTS OF REGISTERS FOR EACH CALL
-    thefile.RegisterFile_Dump();
+		}
+		else if(FunctionCode == 00_0010){ //SRL
 
+		}
+		else if(FunctionCode == 00_0011){ // SRA
+			
+		}
+		else if(FunctionCode == 00_0100){ // SLLV
+			
+		}
+		else if(FunctionCode == 00_0110){ //SRLV
+			
+		}
+		else if(FunctionCode == 01_0000){ //MFHI
+			
+		}
+		else if(FunctionCode == 01_0010){ // MFLO
+			
+		}
+		else if(FunctionCode == 01_1000){ // MULT
+			
+		}
+		else if(FunctionCode == 01_1001){ // MULTU
+			
+		}
+		else if(FunctionCode == 01_1010){ // DIV
+			
+		}
+		else if(FunctionCode == 01_1011){ // DIVU
+			
+		}
+		else if(FunctionCode == 10_0000){ // ADD
+			
+		}
+		else if(FunctionCode == 10_0001){ // ADDU
+			
+		}
+		else if(FunctionCode == 10_0010){ // SUB
+			
+		}
+		else if(FunctionCode == 10_0011){ // SUBU
+			
+		}
+		else if(FunctionCode == 10_0100){ // AND
+			
+		}
+		else if(FunctionCode == 10_0101){ // OR
+			
+		}
+		else if(FunctionCode == 10_0110){ // XOR
+			
+		}
+		else if(FunctionCode == 10_1010){ // SLT
+			
+		}
+		else if(FunctionCode == 10_1011){ // SLTU
+			
+		}
+	}
+	else if(OpCode == 001000){ // ADDI
+
+	}
+	else if(OpCode == 001001){ //ADDIU
+
+	}
+	else if (OpCode == 001010){ // SLTI
+
+	}
+	else if (OpCode == 001011){ // SLTIU
+
+	}
+				
 }
