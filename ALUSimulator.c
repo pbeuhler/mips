@@ -83,10 +83,10 @@ extern void ALUSimulator( RegisterFile theRegisterFile, uint32_t OpCode, uint32_
 
 	if(OpCode == 000000){
 		if(FunctionCode == 00_0000){ //NOOP/SLL
-
+			Rd = Rs << ShiftAmt;
 		}
 		else if(FunctionCode == 00_0010){ //SRL
-
+			Rd = Rs >> ShiftAmt;
 		}
 		else if(FunctionCode == 00_0011){ // SRA
 			
