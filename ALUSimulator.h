@@ -15,6 +15,7 @@ extern void ALUSimulator( RegisterFile theRegisterFile,
 				uint32_t FunctionCode,
 				uint32_t ImmediateValue,
 				uint32_t* Status );
+extern void binary(uint32_t* rs, uint32_t* rt);
 
 
 #endif
