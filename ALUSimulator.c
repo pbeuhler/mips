@@ -43,7 +43,7 @@ extern void ALUSimulator( RegisterFile theRegisterFile,
 				FunctionCode,
 				ImmediateValue );
 				
-//gcc -o ALUSimulator_Main AluSimulator_Main.c AlUSimulator.c RegisterFIle_01.c -I.
+//gcc -o ALUSimulator_Main ALUSimulator_Main.c ALUSimulator.c RegisterFile_01.c -I.
 
 	// ./ALUSimulator_Main
 uint32_t* RdValue_S = NULL;
@@ -61,10 +61,10 @@ RegisterFile_Read(  theRegisterFile,
 			Rd = *RdValue_S << 1;
 		}
 		else if(FunctionCode == 0x02){ //SRL shift right logical
-			Rd = *RdValue_S >> 1;
+			Rd = *RdValue_S >> ShiftAmt;
 		}
 		else if(FunctionCode == 0x03){ // SRA shift right arithmetic //0x03
-			Rd = *RdValue_S >> 1;
+			Rd = *RdValue_S >> ShiftAmt;
 		}
 		else if(FunctionCode == 0x04){ // SLLV shift left logical variable amount
 			Rd = *RdValue_S << *RdValue_T;
