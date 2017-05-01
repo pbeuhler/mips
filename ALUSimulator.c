@@ -56,64 +56,64 @@ RegisterFile_Read(  theRegisterFile,
 								 Rs, RdValue_S,
 								 Rt,  RdValue_T );
 
-	if(OpCode == 000000){
-		if(FunctionCode == 000000){ //NOOP/SLL no op / shift left logical
+	if(OpCode == 0x00){
+		if(FunctionCode == 0x00){ //NOOP/SLL no op / shift left logical
 			Rd = *RdValue_S << 1;
 		}
-		else if(FunctionCode == 000010){ //SRL shift right logical
+		else if(FunctionCode == 0x02){ //SRL shift right logical
 			Rd = *RdValue_S >> 1;
 		}
-		else if(FunctionCode == 000011){ // SRA shift right arithmetic //0x03
+		else if(FunctionCode == 0x03){ // SRA shift right arithmetic //0x03
 			Rd = *RdValue_S >> 1;
 		}
-		else if(FunctionCode == 000100){ // SLLV shift left logical variable amount
+		else if(FunctionCode == 0x04){ // SLLV shift left logical variable amount
 			Rd = *RdValue_S << ShiftAmt;
 		}
-		else if(FunctionCode == 000110){ //SRLV shift right logical variable amount
+		else if(FunctionCode == 0x06){ //SRLV shift right logical variable amount
 			Rd = *RdValue_S >> ShiftAmt;
 		}
-		else if(FunctionCode == 100000){ // ADD
+		else if(FunctionCode == 0x20){ // ADD
 			Rd = *RdValue_S + *RdValue_T;
 		}
-		else if(FunctionCode == 100001){ // ADDU
+		else if(FunctionCode == 0x21){ // ADDU
 			Rd = *RdValue_S + *RdValue_T;
 		}
-		else if(FunctionCode == 100010){ // SUB
+		else if(FunctionCode == 0x22){ // SUB
 			Rd = *RdValue_S - *RdValue_T;
 		}
-		else if(FunctionCode == 100011){ // SUBU
+		else if(FunctionCode == 0x23){ // SUBU
 			Rd = *RdValue_S - *RdValue_T;
 		}
-		else if(FunctionCode == 100100){ // AND
+		else if(FunctionCode == 0x24){ // AND
 			Rd = *RdValue_S & *RdValue_T;
 		}
-		else if(FunctionCode == 100101){ // OR
+		else if(FunctionCode == 0x25){ // OR
 			Rd = *RdValue_S | *RdValue_T;
 		}
-		else if(FunctionCode == 100110){ // XOR
+		else if(FunctionCode == 0x26){ // XOR
 			Rd = *RdValue_S ^ *RdValue_T;
 		}
-		else if(FunctionCode == 101010){ // SLT
+		else if(FunctionCode == 0x2A){ // SLT
 			Rd = (*RdValue_S < *RdValue_T);
 		}
-		else if(FunctionCode == 101011){ // SLTU DOES THIS RETURN BOOL OR INT?
+		else if(FunctionCode == 0x2B){ // SLTU DOES THIS RETURN BOOL OR INT?
 			Rd = (*RdValue_S < *RdValue_T);
 		}
 	}
-	else if(OpCode == 001000){ // ADDI
+	else if(OpCode == 0x08){ // ADDI
 		*RdValue_T = *RdValue_S + ImmediateValue;
 	}
-	else if(OpCode == 001001){ //ADDIU
+	else if(OpCode == 0x09){ //ADDIU
 		*RdValue_T = *RdValue_S + ImmediateValue;
 	}
-	else if (OpCode == 001010){ // SLTI
+	else if (OpCode == 0x0A){ // SLTI
 		*RdValue_T = (*RdValue_S < ImmediateValue);
 	}
-	else if (OpCode == 001011){ // SLTIU
+	else if (OpCode == 0x0B){ // SLTIU
 		*RdValue_T = (*RdValue_S < ImmediateValue);
 	}
 
-	if(OpCode == 000000){
+	if(OpCode == 0x00){
 		RegisterFile_Write(  theRegisterFile, 1, WrtAddr, Rd );
 	}
 	else{
