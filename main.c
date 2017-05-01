@@ -20,7 +20,7 @@
 #include <stdio.h>
 
 #include "RegisterFile.h"
-//#include "ALUSimulator.h"
+#include "ALUSimulator.h"
 
 //
 //	Define a structure to hold a decoded MIPS instruction.
@@ -174,12 +174,19 @@ int32_t main() {
 	//
 	//	Load Primary_RegisterFile
 	//
+
 	RegisterFile_Write( Primary_RegisterFile, true, 0X01, 0X05 );
 	RegisterFile_Write( Primary_RegisterFile, true, 0X02, 0X10 );
 	RegisterFile_Write( Primary_RegisterFile, true, 0X03, 0X17 );
 	RegisterFile_Write( Primary_RegisterFile, true, 0X04, 0X390 );
 	RegisterFile_Write( Primary_RegisterFile, true, 0X05, 0X1010 );
 
+	int i =0;
+	for(i=6;i<=32;i++){
+
+        RegisterFile_Write( Primary_RegisterFile, true, i, 0);
+
+	}
 	printf( "Initial RegisterFile: ========================================\n" );
 	RegisterFile_Dump( Primary_RegisterFile );
 
@@ -211,15 +218,19 @@ int32_t main() {
 		MIPS_Decode( aMIPS_Instruction, &MIPS_Instruction_Seq[0] );
 		MIPS_Instruction_Dump( MIPS_Instruction_Seq[0] );
 
-		ALUSimulator( Primary_RegisterFile,
-						MIPS_Instruction_Seq[0].OpCode,
-						MIPS_Instruction_Seq[0].Rs,
-						MIPS_Instruction_Seq[0].Rt,
-						MIPS_Instruction_Seq[0].Rd,
-						MIPS_Instruction_Seq[0].ShiftAmt,
-						MIPS_Instruction_Seq[0].FunctionCode,
-						MIPS_Instruction_Seq[0].ImmediateValue,
-						&ALUStatus );
+        //printf("queque %d", Primary_RegisterFile[2]);
+
+//		ALUSimulator( Primary_RegisterFile,
+//						MIPS_Instruction_Seq[0].OpCode,
+//						MIPS_Instruction_Seq[0].Rs,
+//						MIPS_Instruction_Seq[0].Rt,
+//						MIPS_Instruction_Seq[0].Rd,
+//						MIPS_Instruction_Seq[0].ShiftAmt,
+//						MIPS_Instruction_Seq[0].FunctionCode,
+//						MIPS_Instruction_Seq[0].ImmediateValue,
+//						&ALUStatus );
+
+
 
 	}
 

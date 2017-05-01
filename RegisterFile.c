@@ -67,8 +67,14 @@ extern void RegisterFile_Read( RegisterFile theRegisterFile,
 	//
 	//	Read the operands
 	//
-	*RdValue_S = theRegisterFile[RdAddr_S];
-	*RdValue_T = theRegisterFile[RdAddr_T];
+	uint32_t x = theRegisterFile[RdAddr_S];
+	uint32_t y = theRegisterFile[RdAddr_T];
+    RdValue_T = x;
+	RdValue_S = y;
+	printf("AQUIIIIIIIIIIIIIII %d", RdValue_T);
+
+
+	//*RdValue_T = theRegisterFile[RdAddr_T];
 
 }
 
