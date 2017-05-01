@@ -67,10 +67,10 @@ RegisterFile_Read(  theRegisterFile,
 			Rd = *RdValue_S >> 1;
 		}
 		else if(FunctionCode == 0x04){ // SLLV shift left logical variable amount
-			Rd = *RdValue_S << ShiftAmt;
+			Rd = *RdValue_S << *RdValue_T;
 		}
 		else if(FunctionCode == 0x06){ //SRLV shift right logical variable amount
-			Rd = *RdValue_S >> ShiftAmt;
+			Rd = *RdValue_S >> *RdValue_T;
 		}
 		else if(FunctionCode == 0x20){ // ADD
 			Rd = *RdValue_S + *RdValue_T;
