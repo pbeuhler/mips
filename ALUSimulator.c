@@ -61,27 +61,27 @@ RegisterFile_Read(  theRegisterFile,
 
 	if(OpCode == 0x00){
 		if(FunctionCode == 0x00){ //NOOP/SLL no op / shift left logical
-			Rd = *RdValue_S << ShiftAmt;
+			Rd = *RdValue_T << ShiftAmt; //WHY DO YOU SHIFT T REGISTER INSTEAD OF S?
 		}
 		else if(FunctionCode == 0x02){ //SRL shift right logical
-			Rd = *RdValue_S >> ShiftAmt;
+			Rd = *RdValue_T >> ShiftAmt;
 		}
 
 
 
-		else if(FunctionCode == 0x03){ // SRA shift right arithmetic //0x03 correct for arithmetic use cast
+		else if(FunctionCode == 0x03){ // SRA shift right arithmetic, correct for arithmetic use cast
 
-			Rd = ((int32_t)*RdValue_S) >> ShiftAmt;
+			Rd = ((int32_t)*RdValue_T) >> ShiftAmt;
 		}
 
 
 
 
 		else if(FunctionCode == 0x04){ // SLLV shift left logical variable amount
-			Rd = *RdValue_S << *RdValue_T;
+			Rd = *RdValue_T << *RdValue_S;
 		}
 		else if(FunctionCode == 0x06){ //SRLV shift right logical variable amount
-			Rd = *RdValue_S >> *RdValue_T;
+			Rd = *RdValue_T >> *RdValue_S;
 		}
 		else if(FunctionCode == 0x20){ // ADD
 			Rd = *RdValue_S + *RdValue_T;
