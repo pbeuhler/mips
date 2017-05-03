@@ -52,20 +52,31 @@ uint32_t* RdValue_T = NULL;
 RdValue_S = malloc(sizeof(uint32_t));
 RdValue_T = malloc(sizeof(uint32_t));
 
+//cast
+ImmediateValue = (uint32_t)((int16_t)ImmediateValue);
+
 RegisterFile_Read(  theRegisterFile,
 								 Rs, RdValue_S,
 								 Rt,  RdValue_T );
 
 	if(OpCode == 0x00){
 		if(FunctionCode == 0x00){ //NOOP/SLL no op / shift left logical
-			Rd = *RdValue_S << 1;
+			Rd = *RdValue_S << ShiftAmt;
 		}
 		else if(FunctionCode == 0x02){ //SRL shift right logical
 			Rd = *RdValue_S >> ShiftAmt;
 		}
-		else if(FunctionCode == 0x03){ // SRA shift right arithmetic //0x03
-			Rd = *RdValue_S >> ShiftAmt;
+
+
+
+		else if(FunctionCode == 0x03){ // SRA shift right arithmetic //0x03 correct for arithmetic use cast
+
+			Rd = ((int32_t)*RdValue_S) >> ShiftAmt;
 		}
+
+
+
+
 		else if(FunctionCode == 0x04){ // SLLV shift left logical variable amount
 			Rd = *RdValue_S << *RdValue_T;
 		}
@@ -96,7 +107,7 @@ RegisterFile_Read(  theRegisterFile,
 		else if(FunctionCode == 0x2A){ // SLT
 			Rd = (*RdValue_S < *RdValue_T);
 		}
-		else if(FunctionCode == 0x2B){ // SLTU DOES THIS RETURN BOOL OR INT?
+		else if(FunctionCode == 0x2B){ // SLTU
 			Rd = (*RdValue_S < *RdValue_T);
 		}
 	}
