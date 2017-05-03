@@ -1,3 +1,8 @@
+
+#include "ALUSimulator.h"
+#include "RegisterFile.h"
+#include <string.h>
+#include <math.h>
 //*****************************************************************************
 //--ALUSimulator.c
 //
@@ -19,10 +24,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "RegisterFile_01.h"
+#include "RegisterFile.h"
 #include "ALUSimulator.h"
 
-uint32_t WrtAddr = 9;
+//uint32_t WrtAddr = 9;
 
 extern void ALUSimulator( RegisterFile theRegisterFile,
 				uint32_t OpCode,
@@ -31,18 +36,18 @@ extern void ALUSimulator( RegisterFile theRegisterFile,
 				uint32_t FunctionCode,
 				uint32_t ImmediateValue,
 				uint32_t* Status ) {
-				
+
 	printf( ">>ALU: Opcode: %02X; Rs: %02X; Rt: %02X; Rd: %02X;\n",
 				OpCode,
 				Rs,
 				Rt,
 				Rd );
-				
-	printf( ">>>>ALU: ShiftAmt: %02X; FunctionCode: %02X; ImmediateValue: %04X;\n",
-				ShiftAmt,
-				FunctionCode,
-				ImmediateValue );
-				
+
+//	printf( ">>>>ALU: ShiftAmt: %02X; FunctionCode: %02X; ImmediateValue: %04X;\n",
+//				ShiftAmt,
+//				FunctionCode,
+//				ImmediateValue );
+
 //gcc -o ALUSimulator_Main ALUSimulator_Main.c ALUSimulator.c RegisterFile_01.c -I.
 
 	// ./ALUSimulator_Main
@@ -52,83 +57,78 @@ uint32_t* RdValue_T = NULL;
 RdValue_S = malloc(sizeof(uint32_t));
 RdValue_T = malloc(sizeof(uint32_t));
 
-//cast
-ImmediateValue = (uint32_t)((int16_t)ImmediateValue);
+uint32_t result = 0;
 
-RegisterFile_Read(  theRegisterFile,
-								 Rs, RdValue_S,
-								 Rt,  RdValue_T );
+RegisterFile_Read(theRegisterFile,Rs, RdValue_S, Rt, RdValue_T);
 
-	if(OpCode == 0x00){
-		if(FunctionCode == 0x00){ //NOOP/SLL no op / shift left logical
-			Rd = *RdValue_T << ShiftAmt; //WHY DO YOU SHIFT T REGISTER INSTEAD OF S?
+	if(OpCode == 0){
+		if(FunctionCode == 0){ //NOOP/SLL no op / shift left logical
+            printf("sll \n");
+			result = *RdValue_S << ShiftAmt;
 		}
-		else if(FunctionCode == 0x02){ //SRL shift right logical
-			Rd = *RdValue_T >> ShiftAmt;
+		else if(FunctionCode == 2){ //SRL shift right logical
+			result = *RdValue_S >> ShiftAmt;
+		}
+		else if(FunctionCode == 3){ // SRA shift right arithmetic //0x03
+			result = *RdValue_S >> ShiftAmt;
+		}
+		else if(FunctionCode == 4){ // SLLV shift left logical variable amount
+			result = *RdValue_S << *RdValue_T;
+		}
+		else if(FunctionCode == 6){ //SRLV shift right logical variable amount
+			result = *RdValue_S >> *RdValue_T;
+		}
+		else if(FunctionCode == 32){ // ADD
+                        printf("add \n");
+			result = *RdValue_S + *RdValue_T;
+		}
+		else if(FunctionCode == 33){ // ADDU
+			result = *RdValue_S + *RdValue_T;
+		}
+		else if(FunctionCode == 34){ // SUB
+            printf("sub \n");
+			result = *RdValue_S - *RdValue_T;
+		}
+		else if(FunctionCode == 35){ // SUBU
+			result = *RdValue_S - *RdValue_T;
+		}
+		else if(FunctionCode == 36){ // AND
+			result = *RdValue_S & *RdValue_T;
+		}
+		else if(FunctionCode == 37){ // OR
+		            printf("or \n");
+			result = *RdValue_S | *RdValue_T;
+		}
+		else if(FunctionCode == 38){ // XOR
+		            printf("xor \n");
+			result = *RdValue_S ^ *RdValue_T;
+		}
+		else if(FunctionCode == 42){ // SLT
+			result = (*RdValue_S < *RdValue_T);
+		}
+		else if(FunctionCode == 43){ // SLTU DOES THIS RETURN BOOL OR INT?
+			result = (*RdValue_S < *RdValue_T);
 		}
 
-
-
-		else if(FunctionCode == 0x03){ // SRA shift right arithmetic, correct for arithmetic use cast
-
-			Rd = ((int32_t)*RdValue_T) >> ShiftAmt;
-		}
-
-
-
-
-		else if(FunctionCode == 0x04){ // SLLV shift left logical variable amount
-			Rd = *RdValue_T << *RdValue_S;
-		}
-		else if(FunctionCode == 0x06){ //SRLV shift right logical variable amount
-			Rd = *RdValue_T >> *RdValue_S;
-		}
-		else if(FunctionCode == 0x20){ // ADD
-			Rd = *RdValue_S + *RdValue_T;
-		}
-		else if(FunctionCode == 0x21){ // ADDU
-			Rd = *RdValue_S + *RdValue_T;
-		}
-		else if(FunctionCode == 0x22){ // SUB
-			Rd = *RdValue_S - *RdValue_T;
-		}
-		else if(FunctionCode == 0x23){ // SUBU
-			Rd = *RdValue_S - *RdValue_T;
-		}
-		else if(FunctionCode == 0x24){ // AND
-			Rd = *RdValue_S & *RdValue_T;
-		}
-		else if(FunctionCode == 0x25){ // OR
-			Rd = *RdValue_S | *RdValue_T;
-		}
-		else if(FunctionCode == 0x26){ // XOR
-			Rd = *RdValue_S ^ *RdValue_T;
-		}
-		else if(FunctionCode == 0x2A){ // SLT
-			Rd = (*RdValue_S < *RdValue_T);
-		}
-		else if(FunctionCode == 0x2B){ // SLTU
-			Rd = (*RdValue_S < *RdValue_T);
-		}
-	}
-	else if(OpCode == 0x08){ // ADDI
-		*RdValue_T = *RdValue_S + ImmediateValue;
-	}
-	else if(OpCode == 0x09){ //ADDIU
-		*RdValue_T = *RdValue_S + ImmediateValue;
-	}
-	else if (OpCode == 0x0A){ // SLTI
-		*RdValue_T = (*RdValue_S < ImmediateValue);
-	}
-	else if (OpCode == 0x0B){ // SLTIU
-		*RdValue_T = (*RdValue_S < ImmediateValue);
+		RegisterFile_Write(theRegisterFile, 1, Rd, result);
 	}
 
-	if(OpCode == 0x00){
-		RegisterFile_Write(  theRegisterFile, 1, WrtAddr, Rd );
+	else if(OpCode == 8){ // ADDI
+        printf("addi \n");
+		result = *RdValue_S + ImmediateValue;
+		RegisterFile_Write(theRegisterFile, 1, Rt, result);
 	}
-	else{
-		RegisterFile_Write(  theRegisterFile, 1, WrtAddr, *RdValue_T );
+	else if(OpCode == 9){ //ADDIU
+		result = *RdValue_S + ImmediateValue;
+		RegisterFile_Write(theRegisterFile, 1, Rt, result);
 	}
-	WrtAddr++;
-}				
+	else if (OpCode == 10){ // SLTI
+		result = (*RdValue_S < ImmediateValue);
+        RegisterFile_Write(theRegisterFile, 1, Rt, result);
+	}
+	else if (OpCode == 11){ // SLTIU
+		result = (*RdValue_S < ImmediateValue);
+        RegisterFile_Write(theRegisterFile, 1, Rt, result);
+	}
+
+}
